@@ -1,0 +1,22 @@
+#######################################
+# Syntax Coloring Map For JUXI_HeartRate_SPO2
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+JUXI_HeartRate_SPO2            KEYWORD1
+JUXI_HeartRate_SPO2_I2C        KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin                    KEYWORD2
+getHeartbeatSPO2         KEYWORD2
+getTemperature_C         KEYWORD2
+sensorStartCollect       KEYWORD2
+sensorEndCollect         KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
