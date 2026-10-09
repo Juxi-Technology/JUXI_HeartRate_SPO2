@@ -4,19 +4,36 @@ English | [简体中文](README_CN.md)
 
 A **MAX30102**-based pulse oximetry and heart-rate module. It measures blood oxygen saturation (SpO2), heart rate and board temperature over I2C.
 
-This repository collects the Arduino library, the Python examples for Raspberry Pi and Windows, and the desktop GUI tool — each with documentation in English and Simplified Chinese.
+This repository collects the Arduino library, the Python examples for Raspberry Pi and Windows, and the desktop GUI tool — The tutorials under `docs/` are available in 11 languages.
 
 ## 📦 Repository layout
 
 | Path | Contents |
 |------|----------|
-| `JUXI_HeartRate_SPO2/` | The Arduino library (`src/`), a complete sketch (`examples/gainHeartbeatSPO2/`), the Arduino tutorial, and the Python examples |
-| `JUXI_HeartRate_SPO2/HeartRateOximeter/` | Desktop GUI tool — source and user guide |
-| `HeartRateOximeter/` | The same GUI tool together with a pre-built Windows bundle (`dist/`) |
-| `JUXI_HeartRate_SPO2/python/raspberry/` | Raspberry Pi tutorials — [English](JUXI_HeartRate_SPO2/python/raspberry/README.md) · [简体中文](JUXI_HeartRate_SPO2/python/raspberry/README_CN.md) |
-| `JUXI_HeartRate_SPO2/python/windows/` | Windows tutorials — [English](JUXI_HeartRate_SPO2/python/windows/README.md) · [简体中文](JUXI_HeartRate_SPO2/python/windows/README_CN.md) |
+| `docs/<lang>/` | Tutorials — the same four guides in each language tree. Images are stored only under `docs/en/`; every other language links to them. |
+| `docs/<lang>/01-arduino/` | Arduino tutorial |
+| `docs/<lang>/02-raspberry-pi/` | Raspberry Pi tutorial |
+| `docs/<lang>/03-windows/` | Windows tutorial |
+| `docs/<lang>/04-gui-tool/` | Desktop GUI tool user guide |
+| `JUXI_HeartRate_SPO2/` | The Arduino library (`src/`), a complete sketch (`examples/gainHeartbeatSPO2/`), and the Python examples |
+| `HeartRateOximeter/` | Desktop GUI tool — source and a pre-built Windows bundle (`dist/`) |
 
-Every document exists in two versions and they link to each other — `*.md` is English, `*_CN.md` is Simplified Chinese.
+The tutorials are available in 11 languages — the same four guides in each folder:
+
+| Language | Folder |
+|----------|--------|
+| English | [`docs/en/`](docs/en/) |
+| Deutsch | [`docs/de/`](docs/de/) |
+| Español | [`docs/es/`](docs/es/) |
+| Français | [`docs/fr/`](docs/fr/) |
+| Italiano | [`docs/it/`](docs/it/) |
+| 日本語 | [`docs/ja/`](docs/ja/) |
+| 한국어 | [`docs/ko/`](docs/ko/) |
+| Português (BR) | [`docs/pt-br/`](docs/pt-br/) |
+| Português (PT) | [`docs/pt-pt/`](docs/pt-pt/) |
+| 简体中文 | [`docs/zh-hans/`](docs/zh-hans/) |
+| 繁體中文 | [`docs/zh-hant/`](docs/zh-hant/) |
+
 
 ## ✨ Features
 
@@ -53,7 +70,7 @@ TX and RX must be crossed.
 
 **Raspberry Pi / Windows** — see the platform tutorials linked above.
 
-**Desktop GUI tool** — run `HeartRateOximeter/dist/HeartRateOximeter/HeartRateOximeter.exe` on Windows, or run the Python source directly. See the [GUI user guide](HeartRateOximeter/README.md).
+**Desktop GUI tool** — run `HeartRateOximeter/dist/HeartRateOximeter/HeartRateOximeter.exe` on Windows, or run the Python source directly. See the [GUI user guide](docs/en/04-gui-tool/README.md).
 
 ## 📐 Typical readings
 
