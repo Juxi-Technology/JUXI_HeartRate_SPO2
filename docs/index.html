@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JUXI 心率血氧传感器 · 在线上位机与文档</title>
+<meta name="description" content="JUXI_HeartRate_SPO2 心率血氧传感器的浏览器上位机（Web Serial）与多语言使用文档。">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#/tool">
+    <span class="brand-mark"></span>
+    <span>JUXI 心率血氧传感器</span>
+  </a>
+  <nav class="tabs">
+    <button class="tab active" id="tab-tool" data-view="tool">上位机</button>
+    <button class="tab" id="tab-docs" data-view="docs">使用文档</button>
+  </nav>
+  <span class="spacer"></span>
+  <div class="tabs" id="uiLangSwitch">
+    <button class="tab" data-lang="en">EN</button>
+    <button class="tab" data-lang="zh">中文</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= 上位机 ================= -->
+  <section id="view-tool">
+    <div class="tool-grid">
+      <div>
+        <div class="card">
+          <h2 data-i18n="secSettings">串口设置</h2>
+          <div class="row">
+            <label for="baud" data-i18n="baud">波特率</label>
+            <select id="baud">
+              <option value="9600" selected>9600</option>
+              <option value="19200">19200</option>
+              <option value="38400">38400</option>
+              <option value="57600">57600</option>
+              <option value="115200">115200</option>
+            </select>
+          </div>
+          <div class="row">
+            <button class="primary" id="connectBtn" data-i18n="connect">连接串口</button>
+            <span class="hint" id="portHint"></span>
+          </div>
+          <p class="note" data-i18n="browserNote"></p>
+        </div>
+
+        <div class="card">
+          <h2 data-i18n="secControl">模块控制</h2>
+          <div class="row">
+            <button id="collectBtn" disabled data-i18n="startCollect">启动采集</button>
+            <button id="monitorBtn" disabled data-i18n="startMonitor">开始监测</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 data-i18n="secTip">使用提示</h2>
+          <p class="tip" data-i18n="tip"></p>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h2 data-i18n="secData">实时数据</h2>
+          <div class="metric">
+            <span class="m-name" data-i18n="spo2">血氧 (SPO2)</span>
+            <span class="m-value spo2" id="spo2">-</span>
+            <span class="m-unit">%</span>
+          </div>
+          <div class="metric">
+            <span class="m-name" data-i18n="hr">心率</span>
+            <span class="m-value hr" id="hr">-</span>
+            <span class="m-unit" data-i18n="hrUnit">次/分</span>
+          </div>
+          <div class="metric">
+            <span class="m-name" data-i18n="temp">温度</span>
+            <span class="m-value temp" id="temp">-</span>
+            <span class="m-unit">°C</span>
+          </div>
+          <div class="status-line">
+            <span class="status-dot" id="statusDot"></span>
+            <span data-i18n="status">状态</span>
+            <strong id="statusText" data-i18n="stDisconnected">未连接</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 文档 ================= -->
+  <section id="view-docs" hidden>
+    <div class="docs-grid">
+      <aside class="sidebar">
+        <div class="card">
+          <label for="docLang" data-i18n="language">语言</label>
+          <select id="docLang"></select>
+          <nav class="doc-nav" id="docNav"></nav>
+        </div>
+      </aside>
+      <article class="doc" id="docContent"></article>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  JUXI_HeartRate_SPO2 · <a href="https://github.com/Juxi-Technology/JUXI_HeartRate_SPO2" rel="noopener">GitHub</a>
+</footer>
+
+<script src="assets/markdown.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
