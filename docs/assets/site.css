@@ -101,6 +101,31 @@ main { max-width: 1180px; margin: 0 auto; padding: 24px 20px 56px; }
   color: var(--text);
 }
 
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card-head h2 { margin: 0; }
+
+.filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filter-toggle input { margin: 0; accent-color: var(--accent); }
+
+.filter-info { margin-top: 10px; }
+.filter-info:empty { display: none; }
+
 .row {
   display: flex;
   align-items: center;

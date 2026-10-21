@@ -66,7 +66,13 @@
 
       <div>
         <div class="card">
-          <h2 data-i18n="secData">实时数据</h2>
+          <div class="card-head">
+            <h2 data-i18n="secData">实时数据</h2>
+            <label class="filter-toggle">
+              <input type="checkbox" id="filterToggle" checked>
+              <span data-i18n="filterLabel">滤波</span>
+            </label>
+          </div>
           <div class="metric">
             <span class="m-name" data-i18n="spo2">血氧 (SPO2)</span>
             <span class="m-value spo2" id="spo2">-</span>
@@ -87,6 +93,7 @@
             <span data-i18n="status">状态</span>
             <strong id="statusText" data-i18n="stDisconnected">未连接</strong>
           </div>
+          <div class="hint filter-info" id="filterInfo"></div>
         </div>
       </div>
     </div>

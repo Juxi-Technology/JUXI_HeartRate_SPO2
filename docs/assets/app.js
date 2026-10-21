@@ -40,7 +40,8 @@
       connectFail: 'Connection failed: ',
       language: 'Language',
       docLoading: 'Loading...',
-      docFailed: 'Failed to load this page: '
+      docFailed: 'Failed to load this page: ',
+      filterLabel: 'Filter',
     },
     zh: {
       tabTool: '上位机',
@@ -78,7 +79,8 @@
       connectFail: '连接失败：',
       language: '语言',
       docLoading: '加载中…',
-      docFailed: '加载失败：'
+      docFailed: '加载失败：',
+      filterLabel: '滤波'
     }
   };
 
@@ -114,6 +116,7 @@
       b.classList.toggle('active', b.getAttribute('data-lang') === uiLang);
     });
     setStatus(statusKey, statusClass);
+    renderFilterInfo();
     refreshControls();
   }
 
@@ -249,6 +252,7 @@
       return;
     }
     rxBuf = new Uint8Array(0);
+    resetFilters();
     writer = port.writable.getWriter();
     connected = true;
     collecting = false;
@@ -338,6 +342,7 @@
       setStatus('stMonitorStopped', 'stopped');
     } else {
       monitoring = true;
+      resetFilters();
       setStatus('stMonitoring', 'collecting');
       monitorLoop();
     }
@@ -346,6 +351,96 @@
 
   function stopMonitor() {
     monitoring = false;
+  }
+
+  /* ---------- 读数滤波：滑动中位数 + 异常值剔除 ---------- */
+
+  function median(values) {
+    var a = values.slice().sort(function (x, y) { return x - y; });
+    var mid = a.length >> 1;
+    return a.length % 2 ? a[mid] : (a[mid - 1] + a[mid]) / 2;
+  }
+
+  /*
+   * 每次采样返回窗口的中位数；明显偏离当前中位数的样本不计入窗口。
+   * 连续 3 次被判异常说明测量条件已经变了（重新放手指等），清空窗口重新开始，
+   * 避免一次真实跳变让读数被旧值锁死。
+   */
+  function makeFilter(opts) {
+    var win = [];
+    var rejects = 0;
+
+    function current() { return win.length ? median(win) : null; }
+
+    return {
+      reset: function () { win = []; rejects = 0; },
+      push: function (v) {
+        if (v < opts.min || v > opts.max) {
+          rejects++;
+          return { value: current(), outlier: true };
+        }
+        if (win.length >= 2 && Math.abs(v - median(win)) > opts.maxDelta) {
+          rejects++;
+          if (rejects >= 3) {
+            win = [v];
+            rejects = 0;
+            return { value: v, outlier: true };
+          }
+          return { value: current(), outlier: true };
+        }
+        rejects = 0;
+        win.push(v);
+        if (win.length > opts.window) win.shift();
+        return { value: current(), outlier: false };
+      }
+    };
+  }
+
+  var METRIC_EL = { spo2: '#spo2', hr: '#hr', temp: '#temp' };
+  var dropped = 0;
+  var filters = {
+    hr: makeFilter({ min: 35, max: 220, maxDelta: 40, window: 5 }),
+    spo2: makeFilter({ min: 70, max: 100, maxDelta: 6, window: 5 }),
+    temp: makeFilter({ min: 0, max: 60, maxDelta: 5, window: 5 })
+  };
+
+  function filtering() {
+    return $('#filterToggle').checked;
+  }
+
+  function resetFilters() {
+    Object.keys(filters).forEach(function (k) { filters[k].reset(); });
+    dropped = 0;
+    renderFilterInfo();
+  }
+
+  function renderFilterInfo() {
+    var el = $('#filterInfo');
+    el.textContent = dropped === 0 ? '' :
+      (uiLang === 'zh'
+        ? '已剔除 ' + dropped + ' 次异常读数'
+        : dropped + ' outlier' + (dropped > 1 ? 's' : '') + ' dropped');
+  }
+
+  function showMetric(key, raw, digits) {
+    var el = $(METRIC_EL[key]);
+    if (raw === null) {
+      el.textContent = '-1';
+      filters[key].reset();
+      return;
+    }
+    if (!filtering()) {
+      el.textContent = digits ? raw.toFixed(digits) : String(Math.round(raw));
+      return;
+    }
+    var res = filters[key].push(raw);
+    if (res.outlier) {
+      dropped++;
+      renderFilterInfo();
+    }
+    if (res.value !== null) {
+      el.textContent = digits ? res.value.toFixed(digits) : String(Math.round(res.value));
+    }
   }
 
   async function monitorLoop() {
@@ -358,14 +453,14 @@
         if (f) {
           var spo2 = f[3];
           var hr = ((f[5] << 24) | (f[6] << 16) | (f[7] << 8) | f[8]) >>> 0;
-          $('#spo2').textContent = spo2 === 0 ? '-1' : String(spo2);
-          $('#hr').textContent = hr === 0 ? '-1' : String(hr);
+          showMetric('spo2', spo2 === 0 ? null : spo2, 0);
+          showMetric('hr', hr === 0 ? null : hr, 0);
         }
 
         await send(CMD.temp);
         var g = await waitFrame(2, 600);
         if (g) {
-          $('#temp').textContent = (g[3] + g[4] / 100).toFixed(1);
+          showMetric('temp', g[3] + g[4] / 100, 1);
         }
       } catch (e) {
         if (connected) {
@@ -576,6 +671,13 @@
     });
     var savedBaud = localStorage.getItem('juxi.baud');
     if (savedBaud) $('#baud').value = savedBaud;
+
+    var savedFilter = localStorage.getItem('juxi.filter');
+    if (savedFilter === '0') $('#filterToggle').checked = false;
+    $('#filterToggle').addEventListener('change', function () {
+      localStorage.setItem('juxi.filter', $('#filterToggle').checked ? '1' : '0');
+      resetFilters();
+    });
 
     window.addEventListener('hashchange', route);
     route();
