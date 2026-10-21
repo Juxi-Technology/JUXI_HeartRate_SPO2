@@ -4,7 +4,7 @@
 
 基于 **MAX30102** 的心率血氧监测模块，可通过 I2C 测量血氧饱和度（SpO2）、心率和板载温度。
 
-本仓库汇集了 Arduino 库、树莓派与 Windows 的 Python 例程，以及桌面图形化上位机工具——`docs/` 下的教程提供 11 种语言版本。
+本仓库汇集了 Arduino 库、树莓派与 Windows 的 Python 例程、桌面图形化上位机，以及它的网页版——`docs/` 下的教程提供 11 种语言版本。
 
 ## 📦 仓库结构
 
@@ -15,6 +15,7 @@
 | `docs/<语言>/02-raspberry-pi/` | 树莓派教程 |
 | `docs/<语言>/03-windows/` | Windows 教程 |
 | `docs/<语言>/04-gui-tool/` | 上位机使用说明 |
+| `docs/index.html`、`docs/assets/` | 网页版上位机与教程阅读页，发布在 GitHub Pages 上 |
 | `JUXI_HeartRate_SPO2/` | Arduino 库（`src/`）、完整示例（`examples/gainHeartbeatSPO2/`），以及 Python 例程 |
 | `HeartRateOximeter/` | 桌面图形化上位机——源码，另外附带打包好的 Windows 版本（`dist/`） |
 
@@ -70,7 +71,22 @@
 
 **树莓派 / Windows** —— 见上表对应的平台教程。
 
-**桌面上位机** —— 在 Windows 上运行 `HeartRateOximeter/dist/HeartRateOximeter/HeartRateOximeter.exe`，或直接运行 Python 源码。详见[上位机使用说明](docs/zh-hans/04-gui-tool/README.md)。
+**桌面上位机** —— 在 Windows 上运行 `HeartRateOximeter/dist/HeartRateOximeter.exe`，或直接运行 Python 源码。详见[上位机使用说明](docs/zh-hans/04-gui-tool/README.md)。
+
+**网页版** —— 打开下一节的链接即可，无需安装。
+
+## 🌐 网页版（免安装）
+
+同一套上位机界面也能直接在浏览器里跑，通过 Web Serial API 和模块通信——不需要 Python 和 `.exe`，Windows、macOS、Linux 都能用。
+
+**https://juxi-technology.github.io/JUXI_HeartRate_SPO2/**
+
+1. 用 USB 转 TTL 接好模块并插上电脑（CH340、CP2102、FT232 等驱动需先安装）。
+2. 用**桌面版 Chrome、Edge 或 Opera** 打开链接。Safari 和 Firefox 没有实现 Web Serial，打不开串口。
+3. 点「连接串口」，在浏览器自带的弹窗里选择 USB 串口设备。
+4. 点「启动采集」（模块 LED 点亮），再点「开始监测」。
+
+它和桌面上位机走同一套 Modbus RTU 协议（地址 `0x20`、9600 波特率），读数完全一致。「使用文档」页签里就是同样的 11 语言教程。两个限制：页面每次都要联网加载；浏览器一次只授权给页面一个串口设备。
 
 ## 📐 数据参考范围
 

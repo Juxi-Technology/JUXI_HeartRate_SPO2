@@ -4,7 +4,7 @@ English | [简体中文](README_CN.md)
 
 A **MAX30102**-based pulse oximetry and heart-rate module. It measures blood oxygen saturation (SpO2), heart rate and board temperature over I2C.
 
-This repository collects the Arduino library, the Python examples for Raspberry Pi and Windows, and the desktop GUI tool — The tutorials under `docs/` are available in 11 languages.
+This repository collects the Arduino library, the Python examples for Raspberry Pi and Windows, the desktop GUI tool, and a browser-based version of it — The tutorials under `docs/` are available in 11 languages.
 
 ## 📦 Repository layout
 
@@ -15,6 +15,7 @@ This repository collects the Arduino library, the Python examples for Raspberry 
 | `docs/<lang>/02-raspberry-pi/` | Raspberry Pi tutorial |
 | `docs/<lang>/03-windows/` | Windows tutorial |
 | `docs/<lang>/04-gui-tool/` | Desktop GUI tool user guide |
+| `docs/index.html`, `docs/assets/` | Web version of the GUI and the tutorial viewer, published to GitHub Pages |
 | `JUXI_HeartRate_SPO2/` | The Arduino library (`src/`), a complete sketch (`examples/gainHeartbeatSPO2/`), and the Python examples |
 | `HeartRateOximeter/` | Desktop GUI tool — source and a pre-built Windows bundle (`dist/`) |
 
@@ -70,7 +71,22 @@ TX and RX must be crossed.
 
 **Raspberry Pi / Windows** — see the platform tutorials linked above.
 
-**Desktop GUI tool** — run `HeartRateOximeter/dist/HeartRateOximeter/HeartRateOximeter.exe` on Windows, or run the Python source directly. See the [GUI user guide](docs/en/04-gui-tool/README.md).
+**Desktop GUI tool** — run `HeartRateOximeter/dist/HeartRateOximeter.exe` on Windows, or run the Python source directly. See the [GUI user guide](docs/en/04-gui-tool/README.md).
+
+**Web version** — open the link in the next section; nothing to install.
+
+## 🌐 Web version (no install)
+
+The same GUI also runs in a browser through the Web Serial API — no Python, no `.exe`, and it works on macOS and Linux as well as Windows.
+
+**https://juxi-technology.github.io/JUXI_HeartRate_SPO2/**
+
+1. Wire the module to a USB-to-TTL adapter and plug it in — the adapter driver (CH340, CP2102, FT232…) must be installed.
+2. Open the link in **desktop Chrome, Edge or Opera**. Safari and Firefox do not implement Web Serial.
+3. Click **Connect** and choose the USB serial device in the browser's own dialog.
+4. **Start Collection** (the module LED turns on), then **Start Monitoring**.
+
+It speaks the same Modbus RTU protocol as the desktop tool (address `0x20`, 9600 baud), so the readings are identical. The **Docs** tab serves the same 11-language tutorials. Two limits worth knowing: the page has to be loaded from the network each time, and the browser grants it one serial device at a time.
 
 ## 📐 Typical readings
 
